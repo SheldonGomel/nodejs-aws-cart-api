@@ -38,9 +38,9 @@ export class AuthService {
 
   login(user: User, type: 'jwt' | 'basic' | 'default'): TokenResponse {
     const LOGIN_MAP = {
-      jwt: this.loginJWT,
-      basic: this.loginBasic,
-      default: this.loginJWT,
+      jwt: this.loginJWT.bind(this),
+      basic: this.loginBasic.bind(this),
+      default: this.loginJWT.bind(this),
     };
     const login = LOGIN_MAP[type];
 

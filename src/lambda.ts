@@ -18,6 +18,7 @@ export const handler: Handler = async (
   context: Context,
   callback: Callback,
 ) => {
+  console.log('DB host: ', process.env.POSTGRES_HOST);
   server = server ?? (await bootstrap());
   return server(event, context, callback);
 };
