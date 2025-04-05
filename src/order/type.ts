@@ -20,7 +20,7 @@ export type Address = {
   comment: string;
 };
 export type CreateOrderDto = {
-  items: Array<{ productId: string; count: 1 }>;
+  items: Array<{ productId: string; count: number }>;
   address: {
     comment: string;
     address: string;

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'node:crypto';
 import { CartStatuses } from '../models';
 import { PutCartPayload } from 'src/order/type';
-import { Repository } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import { Cart } from 'src/database/entities/cart.entity';
 import { CartItem } from 'src/database/entities/cartitem.entity';
 import { Product } from 'src/database/entities/product.entity';
@@ -21,7 +21,7 @@ export class CartService {
 
   async findByUserId(userId: string) {
     return await this.cartRepository.findOne({
-      where: { user_id: userId },
+      where: { user_id: userId, status: CartStatuses.OPEN },
       relations: {
         items: {
           product: true,
@@ -32,7 +32,6 @@ export class CartService {
 
   async createByUserId(user_id: string) {
     const userCart = {
-      id: randomUUID(),
       user_id,
       created_at: new Date(),
       updated_at: new Date(),
@@ -41,7 +40,6 @@ export class CartService {
     };
 
     const cart = this.cartRepository.create(userCart);
-    console.log('cart = ', cart);
     return await this.cartRepository.save(cart);
   }
 
@@ -57,7 +55,6 @@ export class CartService {
 
   async updateByUserId(userId: string, payload: PutCartPayload) {
     const userCart = await this.findOrCreateByUserId(userId);
-    console.log('userCart = ', userCart);
 
     const index = userCart.items.findIndex(
       ({ product }) => product.id === payload.product.id,
@@ -83,5 +80,19 @@ export class CartService {
 
   async removeByUserId(userId: string) {
     return await this.cartRepository.delete({ user_id: userId });
+  }
+
+  async updateStatus(
+    cartId: string,
+    status: CartStatuses,
+    queryRunner?: QueryRunner,
+  ) {
+    const cart = await this.cartRepository.findOneBy({ id: cartId });
+    cart.status = status;
+    if (queryRunner) {
+      // Use the transaction manager if a QueryRunner is provided
+      return await queryRunner.manager.update(Cart, cartId, { status });
+    }
+    return await this.cartRepository.update(cartId, { status });
   }
 }
