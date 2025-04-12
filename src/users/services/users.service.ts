@@ -11,11 +11,11 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  findOne(name: string): Promise<User> {
+  async findOne(name: string): Promise<User> {
     return this.userRepository.findOneBy({ name });
   }
 
-  createOne({
+  async createOne({
     name,
     password,
     email = undefined,
