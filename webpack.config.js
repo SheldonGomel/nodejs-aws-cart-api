@@ -3,8 +3,8 @@ module.exports = (options, webpack) => {
   const lazyImports = [
     '@nestjs/microservices/microservices-module',
     '@nestjs/websockets/socket-module',
-    '@fastify/view',
-    '@fastify/static',
+    // '@fastify/view',
+    // '@fastify/static',
   ];
 
   return {
@@ -17,7 +17,7 @@ module.exports = (options, webpack) => {
         type: 'umd',
       },
     },
-    entry: ['./src/lambda.ts'],
+    entry: ['./src/main.ts'],
     externals: [],
     module: {
       ...options.module,

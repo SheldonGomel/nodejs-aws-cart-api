@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer } from '@nestjs/common';
 
 import { AppController } from './app.controller';
+import { LoggingMiddleware } from './middleware/logging.middleware';
 
 import { CartModule } from './cart/cart.module';
 import { AuthModule } from './auth/auth.module';
@@ -12,4 +13,8 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [AppController],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggingMiddleware).forRoutes('*'); // Apply to all routes
+  }
+}

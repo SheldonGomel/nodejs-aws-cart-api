@@ -42,3 +42,6 @@ lerna-debug.log*
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# Ignore EBS
+aws-elastic-beanstalk-*
