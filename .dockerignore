@@ -4,8 +4,6 @@
 
 # Ignore node_modules and build artifacts
 node_modules
-dist
-build
 
 #Ignore cdk files
 cdk*
@@ -37,4 +35,6 @@ env.example
 .prettierrc
 .eslintrc.js
 get-token.sh
+.elasticbeanstalk
+aws-elastic-beanstalk-*
 

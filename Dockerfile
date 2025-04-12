@@ -10,4 +10,5 @@ RUN npm run build-webpack
 FROM docker.io/library/node:18-alpine
 WORKDIR /app
 COPY --from=builder /app/dist/main.js ./dist/main.js
+EXPOSE 4000
 CMD ["node","./dist/main.js"]
